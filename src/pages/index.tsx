@@ -49,46 +49,126 @@ export default function Home() {
               label: "Dataset 1",
               data: generateData(),
               borderColor: "rgba(255, 99, 132, 1)",
-              backgroundColor: "rgba(255, 99, 132, 0.2)",
-              fill: "start",
-            },
-            {
-              label: "Dataset 2",
-              data: generateData(),
-              borderColor: "rgba(16, 234, 74, 1)",
-              backgroundColor: "rgba(16, 234, 0.2)",
-              fill: "start",
-            },
-            {
-              label: "Dataset 1",
-              data: generateData(),
-              borderColor: "rgba(255, 99, 132, 1)",
-              backgroundColor: "rgba(255, 99, 132, 0.2)",
-              fill: "start",
-            },
-            {
-              label: "Dataset 2",
-              data: generateData(),
-              borderColor: "rgba(54, 162, 235, 1)",
-              backgroundColor: "rgba(54, 162, 235, 0.2)",
-              fill: "start",
-            },
-            {
-              label: "Dataset 1",
-              data: generateData(),
-              borderColor: "rgba(255, 99, 132, 1)",
-              backgroundColor: "rgba(255, 99, 132, 0.2)",
-              fill: "start",
+              backgroundColor: function(context) {
+                const chart = context.chart;
+                const { ctx, chartArea } = chart;
+          
+                if (!chartArea) {
+                  return "rgba(255, 99, 132, 0.2)"; // Cor padrão caso chartArea não esteja disponível
+                }
+          
+                const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+                gradient.addColorStop(0, "rgb(95, 39, 51)"); // Cor escura no topo
+                gradient.addColorStop(1, "rgba(255, 99, 132, 0.2)"); // Cor mais clara na parte inferior
+          
+                return gradient;
+              },
+              fill: "false",
             },
             {
               label: "Dataset 2",
               data: generateData(),
               borderColor: "rgba(54, 162, 235, 1)",
-              backgroundColor: "rgba(54, 162, 235, 0.2)",
-              fill: "start",
+              backgroundColor: function(context) {
+                const chart = context.chart;
+                const { ctx, chartArea } = chart;
+          
+                if (!chartArea) {
+                  return "rgba(54, 162, 235, 0.2)"; // Cor padrão caso chartArea não esteja disponível
+                }
+          
+                const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+                gradient.addColorStop(0, "rgb(28, 64, 103)"); // Cor escura no topo
+                gradient.addColorStop(1, "rgba(54, 162, 235, 0.2)"); // Cor mais clara na parte inferior
+          
+                return gradient;
+              },
+              fill: "false",
+            },
+            {
+              label: "Dataset 3",
+              data: generateData(),
+              borderColor: "rgba(255, 159, 64, 1)",
+              backgroundColor: function(context) {
+                const chart = context.chart;
+                const { ctx, chartArea } = chart;
+          
+                if (!chartArea) {
+                  return "rgba(255, 159, 64, 0.2)"; // Cor padrão caso chartArea não esteja disponível
+                }
+          
+                const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+                gradient.addColorStop(0, "rgb(205, 115, 38)"); // Cor escura no topo
+                gradient.addColorStop(1, "rgba(255, 159, 64, 0.2)"); // Cor mais clara na parte inferior
+          
+                return gradient;
+              },
+              fill: "false",
+            },
+            {
+              label: "Dataset 4",
+              data: generateData(),
+              borderColor: "rgba(75, 192, 192, 1)",
+              backgroundColor: function(context) {
+                const chart = context.chart;
+                const { ctx, chartArea } = chart;
+          
+                if (!chartArea) {
+                  return "rgba(75, 192, 192, 0.2)"; // Cor padrão caso chartArea não esteja disponível
+                }
+          
+                const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+                gradient.addColorStop(0, "rgb(19, 121, 121)"); // Cor escura no topo
+                gradient.addColorStop(1, "rgba(75, 192, 192, 0.2)"); // Cor mais clara na parte inferior
+          
+                return gradient;
+              },
+              fill: "false",
+            },
+            {
+              label: "Dataset 5",
+              data: generateData(),
+              borderColor: "rgba(153, 102, 255, 1)",
+              backgroundColor: function(context) {
+                const chart = context.chart;
+                const { ctx, chartArea } = chart;
+          
+                if (!chartArea) {
+                  return "rgba(153, 102, 255, 0.2)"; // Cor padrão caso chartArea não esteja disponível
+                }
+          
+                const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+                gradient.addColorStop(0, "rgb(83, 49, 156)"); // Cor escura no topo
+                gradient.addColorStop(1, "rgba(153, 102, 255, 0.2)"); // Cor mais clara na parte inferior
+          
+                return gradient;
+              },
+              fill: "false",
+            },
+            {
+              label: "Dataset 6",
+              data: generateData(),
+              borderColor: "rgba(255, 159, 64, 1)",
+              backgroundColor: function(context) {
+                const chart = context.chart;
+                const { ctx, chartArea } = chart;
+          
+                if (!chartArea) {
+                  return "rgba(255, 159, 64, 0.2)"; // Cor padrão caso chartArea não esteja disponível
+                }
+          
+                const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+                gradient.addColorStop(0, "rgb(205, 115, 38)"); // Cor escura no topo
+                gradient.addColorStop(1, "rgba(255, 159, 64, 0.2)"); // Cor mais clara na parte inferior
+          
+                return gradient;
+              },
+              fill: "false",
             },
           ],
         };
+
+        const mes = "Outubro"
 
         const config = {
           type: "line" as const,
@@ -105,7 +185,7 @@ export default function Home() {
                   stepSize: 1, // Define o intervalo fixo entre os ticks
                   callback: function (value) {
                     const allowedTicks = [1, 5, 10, 15];
-                    return allowedTicks.includes(value) ? value : null;
+                    return allowedTicks.includes(value) ? `${value}K` : null;
                   },
                 },
                 beginAtZero: true, // Inicia o eixo Y no valor 0
@@ -118,8 +198,14 @@ export default function Home() {
                 tension: 0.2, // Suavidade da linha
               },
               point: {
-                radius: 2,
-                hoverRadius: 7,
+                radius: 0, // Sem pontos visíveis na linha
+                hoverRadius: 6, // Tamanho da bolinha ao passar o mouse
+                hoverBorderWidth: 2, // Largura da borda ao passar o mouse
+                hoverBackgroundColor: function (context) {
+                  // Define a cor de fundo da bolinha como a cor da linha
+                  return context.raw ? context.dataset.borderColor : "transparent";
+                },
+                hoverBorderColor: "#ffffff", // Define a borda branca ao passar o mouse
               },
             },
             plugins: {
@@ -134,6 +220,35 @@ export default function Home() {
               legend: {
                 display: false, // Desativamos a legenda padrão para usar uma customizada
               },
+              tooltip: {
+                backgroundColor: "#ffffff", // Cor de fundo do tooltip
+                titleColor: "rgb(80, 78, 78)", // Cor do título
+                bodyColor: "rgb(0, 0, 0)", // Cor do texto principal
+                // borderColor: "rgba(255, 255, 255, 0.5)", // Cor da borda
+                borderWidth: 1, // Largura da borda
+                padding: 10, // Espaçamento interno
+                cornerRadius: 5, // Arredondamento do tooltip
+                callbacks: {
+                  title: function (tooltipItems) {
+                    // Personaliza o título do tooltip
+                    //return `Data: ${tooltipItems[0].label}`;
+                    return ["Nesse mês", `${mes}`];
+                  },
+                  label: function (tooltipItem) {
+                    // Personaliza o conteúdo principal
+                    return `R$ ${tooltipItem.raw}`;
+                  },
+                },
+                bodyFont: {
+                  weight: 'bold', // Define o texto do conteúdo como negrito
+                  size: 15,
+                },
+                titleFont: {
+                  size: 9, // Define o tamanho do título (opcional)
+                  weight: 'normal', // Mantém o título com peso normal (opcional)
+                },
+                displayColors: false,
+              },
             },
           },
         };
@@ -143,7 +258,13 @@ export default function Home() {
           if (legendContainer) {
             legendContainer.innerHTML = ""; // Limpa a legenda existente
         
+            // Variável de controle para o estado atual
+            let activeDatasetIndex: number | null = null;
+        
             chart.data.datasets.forEach((dataset, index) => {
+              // Define o fill inicial como false para todos os datasets
+              dataset.fill = false;
+        
               // Criar o contêiner do item da legenda
               const legendItem = document.createElement("div");
               legendItem.style.display = "flex";
@@ -168,10 +289,25 @@ export default function Home() {
               legendItem.appendChild(colorBox);
               legendItem.appendChild(label);
         
-              // Alterna a visibilidade da linha do dataset ao clicar no item da legenda
+              // Alterna a visibilidade dos datasets ao clicar no item da legenda
               legendItem.addEventListener("click", () => {
-                const meta = chart.getDatasetMeta(index);
-                meta.hidden = !meta.hidden;
+                if (activeDatasetIndex === index) {
+                  // Se já estiver mostrando apenas esse dataset, volta a mostrar todos
+                  chart.data.datasets.forEach((d) => (d.fill = false)); // Define fill como false para todos
+                  chart.data.datasets.forEach((_, i) => {
+                    const meta = chart.getDatasetMeta(i);
+                    meta.hidden = false; // Mostra todos os datasets
+                  });
+                  activeDatasetIndex = null; // Reseta o estado ativo
+                } else {
+                  // Caso contrário, esconde todos e mostra apenas o dataset clicado
+                  chart.data.datasets.forEach((d, i) => {
+                    d.fill = i === index ? "start" : false; // Define fill como "start" apenas para o clicado
+                    const meta = chart.getDatasetMeta(i);
+                    meta.hidden = i !== index; // Esconde todos exceto o clicado
+                  });
+                  activeDatasetIndex = index; // Atualiza o estado ativo
+                }
                 chart.update();
               });
         
@@ -198,7 +334,7 @@ export default function Home() {
     <>
       <div className={`${styles.page} ${geistSans.variable} ${geistMono.variable}`}>
         <canvas ref={chartRef} style={{ height: "200px", width: "100%" }}></canvas>
-        <div id="legend"></div>
+          <div id="legend" style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}></div>
       </div>
     </>
   );

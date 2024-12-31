@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Chart, Doughnut } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -58,13 +58,13 @@ const doughnutData = {
 
 const doughnutConfig = {
   responsive: true,
+  maintainAspectRatio: false, // Permite que o gráfico seja distorcido para se ajustar ao contêiner
+    
   // maintainAspectRatio: false, // Permite ajustar tamanho
   layout: {
     padding: {
       top: 20,    // Espaço extra acima do gráfico
-      right: 200,  // Espaço extra à direita
       bottom: 20, // Espaço extra abaixo
-      left: 200,   // Espaço extra à esquerda
     },
   },
   plugins: {
@@ -81,73 +81,6 @@ const doughnutConfig = {
     },
   },
 };
-
-// const actions = [
-//   {
-//     name: 'Randomize',
-//     handler(chart: Chart) {
-//       chart.data.datasets.forEach((dataset) => {
-//         dataset.data = numbers({ count: chart.data.labels!.length, min: 0, max: 100 });
-//       });
-//       chart.update();
-//     },
-//   },
-//   {
-//     name: 'Add Dataset',
-//     handler(chart: Chart) {
-//       const data = chart.data;
-//       const newDataset = {
-//         label: 'Dataset ' + (data.datasets.length + 1),
-//         backgroundColor: [],
-//         data: [],
-//       };
-
-//       for (let i = 0; i < data.labels!.length; i++) {
-//         newDataset.data.push(rand(0, 100));
-
-//         const colorIndex = i % Object.keys(CHART_COLORS).length;
-//         newDataset.backgroundColor.push(Object.values(CHART_COLORS)[colorIndex]);
-//       }
-
-//       chart.data.datasets.push(newDataset);
-//       chart.update();
-//     },
-//   },
-//   {
-//     name: 'Add Data',
-//     handler(chart: Chart) {
-//       const data = chart.data;
-//       if (data.datasets.length > 0) {
-//         data.labels!.push('data #' + (data.labels!.length + 1));
-
-//         for (let index = 0; index < data.datasets.length; ++index) {
-//           data.datasets[index].data.push(rand(0, 100));
-//         }
-
-//         chart.update();
-//       }
-//     },
-//   },
-//   {
-//     name: 'Remove Dataset',
-//     handler(chart: Chart) {
-//       chart.data.datasets.pop();
-//       chart.update();
-//     },
-//   },
-//   {
-//     name: 'Remove Data',
-//     handler(chart: Chart) {
-//       chart.data.labels!.splice(-1, 1);
-
-//       chart.data.datasets.forEach((dataset) => {
-//         dataset.data.pop();
-//       });
-
-//       chart.update();
-//     },
-//   },
-// ];
 
 const drawLabelsPlugin = {
   id: 'doughnutLabels',
@@ -208,32 +141,15 @@ const drawLabelsPlugin = {
 export default function DoughnutChartDetails() {
   const chartRef = useRef<ChartJS>(null);
 
-  const handleAction = (action: (chart: ChartJS) => void) => {
-    if (chartRef.current) {
-      action(chartRef.current);
-    }
-  };
-
   return (
     <div>
       <Doughnut 
         data={doughnutData} 
         options={doughnutConfig} 
         ref={chartRef} 
-        style={{ height: "400px", width: "100%" }} 
+        style={{ height: "250px", width: "700px" }} 
         plugins={[drawLabelsPlugin]}
       />
-      <div style={{ marginTop: '20px' }}>
-        {/* {actions.map((action, index) => (
-          <button
-            key={index}
-            onClick={() => handleAction(action.handler)}
-            style={{ marginRight: '10px' }}
-          >
-            {action.name}
-          </button>
-        ))} */}
-      </div>
     </div>
   );
 }

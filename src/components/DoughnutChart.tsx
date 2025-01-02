@@ -24,7 +24,7 @@ type DoughnutChartProps = {
   valorTotal?: number;
   style?: React.CSSProperties;
   data: { label: string; value: number }[];
-  chartColors: { label: string, value: string }[]
+  chartColors: string[]
   label: string
   drawLabels: boolean
 };
@@ -37,9 +37,9 @@ export default function DoughnutChart(props: DoughnutChartProps) {
   const labels = data.map(item => item.label);
   const values = data.map(item => item.value);
 
-  const chartColorsArray = chartColors
-    ? chartColors.map(item => item.value) // Usando as cores personalizadas passadas como parâmetro
-    : Object.values(CHART_COLORS); // Se não for passado, usa as cores padrão
+  // const chartColorsArray = chartColors
+  //   ? chartColors.map(item => item.value) // Usando as cores personalizadas passadas como parâmetro
+  //   : Object.values(CHART_COLORS); // Se não for passado, usa as cores padrão
 
   const doughnutConfig = {
     responsive: true,
@@ -66,7 +66,7 @@ export default function DoughnutChart(props: DoughnutChartProps) {
       {
         label,
         data: values,
-        backgroundColor: chartColorsArray,
+        backgroundColor: chartColors,
         borderWidth: 0
       },
     ],
@@ -74,7 +74,7 @@ export default function DoughnutChart(props: DoughnutChartProps) {
 
   const textCenter = {
     id: 'textCenter',
-    beforeDraw(chart: any) {
+    beforeDraw(chart: ChartJS) {
       const { width } = chart;
       const { ctx } = chart;
 

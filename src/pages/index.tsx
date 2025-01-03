@@ -80,7 +80,7 @@ export default function Home() {
         <DoughnutChartDetails /> */}
 
 
-        <p>Horizontal Bar Chart </p>
+        {/* <p>Horizontal Bar Chart </p>
         <HorizontalBarChart 
           data={[
             { "label": "PRÉ Oadsfasd", "value": 20000 },
@@ -96,7 +96,7 @@ export default function Home() {
           label="Dataset 1"
           chartColor='rgba(54, 162, 235, 1)'
           style={{ height: '300px', width: '100%' }}
-        />
+        /> */}
 
 
         {/* <p>Horizontal Bar Chart Teste</p>
@@ -125,6 +125,16 @@ export default function Home() {
         />
         <p>Vertical Multiple Bar Chart</p>
         <VerticalMultipleBarChart 
+          dataset1={{
+            data: [10, 46, 17, 21, 39, 21, 34, 26, 46, 19, 25, 47],
+            label: "Dataset 1",
+            backgroundColor: "#33C1FF"
+          }}
+          dataset2={{
+            data: [25, 32, 28, 40, 36, 18, 22, 27, 33, 44, 21, 30],
+            label: "Dataset 2",
+            backgroundColor: "#FF5733"
+          }}
           style={{ height: "300px", width: "100%" }}
         />
         <p>Vertical Bar Chart Teste</p>

@@ -1,6 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import styles from "@/styles/Home.module.css";
-import LineChart from "@/components/lineChart";
+import LineChartTeste from "@/components/lineChartTeste";
 import DoughnutChartBase from "@/components/doughnutChartBase";
 import DoughnutChartTextCenter from "@/components/doughnutChartTextCenter";
 import DoughnutChartDetails from "@/components/doughnutChartDetails";
@@ -10,6 +10,7 @@ import HorizontalBarChartTeste from "@/components/horizontalBarChartTeste";
 import HorizontalBarChart from "@/components/horizontalBarChart";
 import DoughnutChart from "@/components/DoughnutChart";
 import VerticalBarChart from "@/components/verticalBarChart";
+import LineChart from "@/components/lineChart";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,12 +22,88 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const inputs = {
+  min: 10000, 
+  max: 50000, 
+  count: 12,
+  decimals: 2,
+};
+
+const generateData = () => {
+  // Começa com um valor aleatório dentro do intervalo
+  let currentValue = Math.random() * (inputs.max - inputs.min) + inputs.min;
+
+  return Array.from({ length: inputs.count }, () => {
+    // Suavizar a variação do valor para não sair do intervalo
+    const variation = (Math.random() - 0.5) * 15000; // A variação pode ser ajustada para controlar a suavidade
+    currentValue = Math.min(Math.max(currentValue + variation, inputs.min), inputs.max); // Garantir que o valor fique dentro do intervalo
+    return Number(currentValue.toFixed(inputs.decimals)); // Retornar o número com as casas decimais
+  });
+};
+
+const inputs2 = {
+  min: 10, 
+  max: 50, 
+  count: 31,
+  decimals: 2,
+};
+
+const generateData2 = () => {
+  // Começa com um valor aleatório dentro do intervalo
+  let currentValue = Math.random() * (inputs2.max - inputs2.min) + inputs2.min;
+
+  return Array.from({ length: inputs2.count }, () => {
+    // Suavizar a variação do valor para não sair do intervalo
+    const variation = (Math.random() - 0.5) * 10; // A variação pode ser ajustada para controlar a suavidade
+    currentValue = Math.min(Math.max(currentValue + variation, inputs2.min), inputs2.max); // Garantir que o valor fique dentro do intervalo
+    return Number(currentValue.toFixed(inputs2.decimals)); // Retornar o número com as casas decimais
+  });
+};
 
 export default function Home() {
   return (
     <> 
       <div className={`${styles.page} ${geistSans.variable} ${geistMono.variable}`}>
-        {/* <LineChart /> */}
+        <LineChart 
+          style={{ height: "200px", width: "100%" }}
+          ticks={[10000, 20000, 30000, 40000, 50000]}
+          unitOfMeasure="K" 
+          labels={["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]}
+          datasets={[
+            {
+              label: "Dataset 1",
+              data: generateData(), // Outra função de geração de dados
+              borderColor: "rgba(54, 162, 235, 1)",
+              fill: false,
+            },
+            {
+              label: "Dataset 2",
+              data: generateData(), // Outra função de geração de dados
+              borderColor: "rgba(255, 159, 64, 1)",
+              fill: true,
+            },
+          ]}
+        />
+        <LineChart 
+          style={{ height: "200px", width: "100%" }}
+          ticks={[10, 20, 30, 40, 50]}
+          unitOfMeasure="Kg"
+          labels={[
+            "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", 
+            "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", 
+            "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", 
+            "31"
+          ]}
+          datasets={[
+            {
+              label: "Dataset 1",
+              data: generateData2(), // Outra função de geração de dados
+              borderColor: "rgba(54, 162, 235, 1)",
+              fill: false,
+            },
+          ]}
+        />
+        {/* <LineChartTeste /> */}
         {/* <DoughnutChart 
           valorTotal={10000} 
           style={{ height: "100%", width: "240px" }}
@@ -114,7 +191,7 @@ export default function Home() {
           chartColor='rgba(54, 162, 235, 1)'
           style={{ height: '300px', width: '100%' }}
         /> */}
-        <p>Vertical Bar Chart</p>
+        {/* <p>Vertical Bar Chart</p>
         <VerticalBarChart 
           style={{ height: "500px", width: "100%" }}
           labels={['PRÉ 1', 'PRÉ 2', 'INICIAL', 'CRESC 1', 'CRESC 2', 'TERM 1', 'TERM 2']}
@@ -122,8 +199,8 @@ export default function Home() {
           label='Dataset 1'
           chartColor="#33C1FF"
           ticks={[1.1, 1.3, 1.5, 1.7, 1.9]}
-        />
-        <p>Vertical Multiple Bar Chart</p>
+        /> */}
+        {/* <p>Vertical Multiple Bar Chart</p>
         <VerticalMultipleBarChart 
           dataset1={{
             data: [10, 46, 17, 21, 39, 21, 34, 26, 46, 19, 25, 47],
@@ -136,9 +213,9 @@ export default function Home() {
             backgroundColor: "#FF5733"
           }}
           style={{ height: "300px", width: "100%" }}
-        />
-        <p>Vertical Bar Chart Teste</p>
-        <VerticalBarChartTeste />
+        /> */}
+        {/* <p>Vertical Bar Chart Teste</p>
+        <VerticalBarChartTeste /> */}
       </div>
     </>
   );

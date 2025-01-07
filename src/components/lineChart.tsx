@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Chart, ChartConfiguration, registerables } from "chart.js";
 
 Chart.register(...registerables);
@@ -8,17 +8,20 @@ type LineChartProps = {
   ticks: number[];
   unitOfMeasure: string;
   labels: string[]
+  showLegends?: boolean
   datasets: {
     label: string;
     data: number[];
     borderColor: string;
-    fill: boolean;
+    fill?: boolean;
   }[];
 }
 
 export default function LineChart(props: LineChartProps) {
-  const { style, datasets, ticks, unitOfMeasure, labels} = props
+  const { style, datasets, ticks, unitOfMeasure, labels, showLegends} = props
   const chartRef = useRef<HTMLCanvasElement | null>(null);
+  const chartInstanceRef = useRef<Chart | null>(null);
+  const [activeDatasetIndex, setActiveDatasetIndex] = useState<number | null>(null);
 
   const maxTickValue = Math.max(...ticks);
   const minTickValue = Math.min(...ticks);
@@ -45,10 +48,10 @@ export default function LineChart(props: LineChartProps) {
         const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
       
         gradient.addColorStop(0, `rgb(${r}, ${g}, ${b})`); // Cor escura no topo
-        gradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0.2)`); // Cor mais clara na parte inferior
+        gradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0.1)`); // Cor mais clara na parte inferior
         return gradient;
       },
-      fill: dataset.fill,
+      fill: showLegends ? false : dataset.fill ?? false,
     })),
   };
 
@@ -178,18 +181,82 @@ export default function LineChart(props: LineChartProps) {
     plugins: [hoverLine]
   };
 
+  const toggleDatasetVisibility = (index: number) => {
+    if (!chartInstanceRef.current) return;
+
+    const chart = chartInstanceRef.current;
+
+    if (activeDatasetIndex === index) {
+      // Se já estiver mostrando apenas esse dataset, volta a mostrar todos
+      chart.data.datasets.forEach((d) => (d.fill = false));
+      chart.data.datasets.forEach((_, i) => {
+        const meta = chart.getDatasetMeta(i);
+        meta.hidden = false; // Mostra todos os datasets
+      });
+      setActiveDatasetIndex(null); // Reseta o estado ativo
+    } else {
+      // Caso contrário, esconde todos e mostra apenas o dataset clicado
+      chart.data.datasets.forEach((d, i) => {
+        d.fill = i === index ? "start" : false; // Define fill como "start" apenas para o clicado
+        const meta = chart.getDatasetMeta(i);
+        meta.hidden = i !== index; // Esconde todos exceto o clicado
+      });
+      setActiveDatasetIndex(index); // Atualiza o estado ativo
+    }
+
+    chart.update();
+  };
+
   useEffect(() => {
     if (chartRef.current) {
-      const chart = new Chart(chartRef.current, config);
-      return () => {
-        chart.destroy();
-      };
+      if (chartInstanceRef.current) {
+        chartInstanceRef.current.destroy();
+      }
+      
+      chartInstanceRef.current = new Chart(chartRef.current, config);
     }
-  }, [config]);
+
+    return () => {
+      if (chartInstanceRef.current) {
+        chartInstanceRef.current.destroy();
+        chartInstanceRef.current = null;
+      }
+    };
+  }, [datasets, labels]);
 
   return (
     <>
       <canvas ref={chartRef} style={style}></canvas>
+      <div style={{ display: "flex", gap: "15px" }}>
+          <div style={{ display: "flex", gap: "15px" }}> 
+          {showLegends ? 
+          (
+            datasets.map((dataset, index) => (
+              <div
+                key={index}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "5px",
+                  cursor: "pointer",
+                  opacity: activeDatasetIndex === null || activeDatasetIndex === index ? 1 : 0.5,
+                }}
+                onClick={() => toggleDatasetVisibility(index)}
+              >
+                <div
+                  style={{
+                    width: "20px",
+                    height: "20px",
+                    backgroundColor: activeDatasetIndex === null || activeDatasetIndex === index ? dataset.borderColor :  "gray",
+                    borderRadius: "20%",
+                  }}
+                ></div>
+                <span>{dataset.label}</span>
+              </div>
+            ))
+          ): null}
+        </div>
+      </div>
     </>
   );
 }

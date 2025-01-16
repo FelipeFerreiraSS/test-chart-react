@@ -42,8 +42,8 @@ const generateData = () => {
 };
 
 const inputs2 = {
-  min: 10, 
-  max: 50, 
+  min: 10000, 
+  max: 50000, 
   count: 31,
   decimals: 2,
 };
@@ -54,7 +54,7 @@ const generateData2 = () => {
 
   return Array.from({ length: inputs2.count }, () => {
     // Suavizar a variação do valor para não sair do intervalo
-    const variation = (Math.random() - 0.5) * 10; // A variação pode ser ajustada para controlar a suavidade
+    const variation = (Math.random() - 0.5) * 10000; // A variação pode ser ajustada para controlar a suavidade
     currentValue = Math.min(Math.max(currentValue + variation, inputs2.min), inputs2.max); // Garantir que o valor fique dentro do intervalo
     return Number(currentValue.toFixed(inputs2.decimals)); // Retornar o número com as casas decimais
   });
@@ -64,7 +64,7 @@ export default function Home() {
   return (
     <> 
       <div className={`${styles.page} ${geistSans.variable} ${geistMono.variable}`}>
-        <LineChart 
+        {/* <LineChart 
           style={{ height: "200px", width: "100%" }}
           ticks={[10000, 20000, 30000, 40000, 50000]}
           unitOfMeasure="K" 
@@ -80,25 +80,56 @@ export default function Home() {
               label: "Dataset 2",
               data: generateData(), // Outra função de geração de dados
               borderColor: "rgba(255, 159, 64, 1)",
-              fill: true,
+              fill: false,
             },
           ]}
-        />
+        /> */}
         <LineChart 
           style={{ height: "200px", width: "100%" }}
-          ticks={[10, 20, 30, 40, 50]}
-          unitOfMeasure="Kg"
+          ticks={[10000, 20000, 30000, 40000, 50000]}
+          unitOfMeasure="K"
           labels={[
             "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", 
             "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", 
             "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", 
             "31"
           ]}
+          showLegends={true}
           datasets={[
             {
               label: "Dataset 1",
               data: generateData2(), // Outra função de geração de dados
               borderColor: "rgba(54, 162, 235, 1)",
+              fill: true,
+            },
+            {
+              label: "Dataset 2",
+              data: generateData2(), // Outra função de geração de dados
+              borderColor: "rgb(112, 255, 64)",
+              fill: false,
+            },
+            {
+              label: "Dataset 3",
+              data: generateData2(), // Outra função de geração de dados
+              borderColor: "rgb(237, 71, 15)",
+              fill: false,
+            },
+            {
+              label: "Dataset 4",
+              data: generateData2(), // Outra função de geração de dados
+              borderColor: "rgb(226, 5, 255)",
+              fill: false,
+            },
+            {
+              label: "Dataset 5",
+              data: generateData2(), // Outra função de geração de dados
+              borderColor: "rgb(245, 249, 7)",
+              fill: false,
+            },
+            {
+              label: "Dataset 6",
+              data: generateData2(), // Outra função de geração de dados
+              borderColor: "rgba(255, 159, 64, 1)",
               fill: false,
             },
           ]}
@@ -200,7 +231,7 @@ export default function Home() {
           chartColor="#33C1FF"
           ticks={[1.1, 1.3, 1.5, 1.7, 1.9]}
         /> */}
-        {/* <p>Vertical Multiple Bar Chart</p>
+        <p>Vertical Multiple Bar Chart</p>
         <VerticalMultipleBarChart 
           dataset1={{
             data: [10, 46, 17, 21, 39, 21, 34, 26, 46, 19, 25, 47],
@@ -213,7 +244,7 @@ export default function Home() {
             backgroundColor: "#FF5733"
           }}
           style={{ height: "300px", width: "100%" }}
-        /> */}
+        />
         {/* <p>Vertical Bar Chart Teste</p>
         <VerticalBarChartTeste /> */}
       </div>

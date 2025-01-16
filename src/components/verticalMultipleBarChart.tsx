@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Chart, ChartOptions, ChartData, registerables, ChartConfiguration, Plugin } from "chart.js";
+import { Chart, ChartOptions, ChartData, registerables, ChartConfiguration, Plugin, layouts } from "chart.js";
 
 Chart.register(...registerables);
 
@@ -19,6 +19,8 @@ interface VerticalMultipleBarChartProps {
 
 export default function VerticalMultipleBarChart(props: VerticalMultipleBarChartProps) {
   const { style, dataset1, dataset2 } = props
+  console.log(dataset1);
+  
   const chartRef = useRef<HTMLCanvasElement | null>(null);
 
   const labels = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
@@ -44,19 +46,25 @@ export default function VerticalMultipleBarChart(props: VerticalMultipleBarChart
   };
 
   const options: ChartOptions = {
+    layout: {
+      padding: {
+        bottom: 40,
+      },
+    },
     scales: {
       x: {
         ticks: {
-          callback: function (value, index) {
-            const month = labels[index];
-            const consumption = "Kg/Consumo";
-            return [month, consumption];
-          },
-          font: {
-            size: 12,
-            lineHeight: 1.5,
-          },
-          padding: 15,
+          display: false
+          // callback: function (value, index) {
+          //   const month = labels[index];
+          //   const consumption = "Kg/Consumo";
+          //   return [month, consumption];
+          // },
+          // font: {
+          //   size: 12,
+          //   lineHeight: 1.5,
+          // },
+          // padding: 15,
         },
         grid: {
           display: false,
@@ -119,10 +127,39 @@ export default function VerticalMultipleBarChart(props: VerticalMultipleBarChart
     },
   }
 
+  const customTickPlugin = {
+    id: "customTickPlugin",
+    afterDraw(chart: Chart) {
+      const { ctx, scales } = chart;
+      const xScale = scales.x;
+  
+      xScale.ticks.forEach((tick, index) => {
+        const labelX = xScale.getPixelForTick(index);
+        const labelY = xScale.bottom + 15; // Ajuste a posição vertical
+  
+        const month = labels[index];
+        const consumption = "Kg/Consumo";
+  
+        // Renderizar o `month`
+        ctx.font = "bold 14px PoppinsRegular";
+        ctx.fillStyle = "blue"; // Cor do `month`
+        ctx.textAlign = "center";
+        ctx.fillText(month, labelX, labelY);
+  
+        // Renderizar o `consumption`
+        ctx.font = "12px PoppinsRegular";
+        ctx.fillStyle = "gray"; // Cor do `consumption`
+        ctx.textAlign = "center";
+        ctx.fillText(consumption, labelX, labelY + 15); // Ajuste para ficar abaixo
+      });
+    },
+  };
+
   const config: ChartConfiguration = {
     type: "bar",
     data: data,
-    options
+    options,
+    plugins: [customTickPlugin]
   };
 
   useEffect(() => {

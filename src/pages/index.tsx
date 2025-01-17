@@ -84,7 +84,7 @@ export default function Home() {
             },
           ]}
         /> */}
-        <LineChart 
+        {/* <LineChart 
           style={{ height: "200px", width: "100%" }}
           ticks={[10000, 20000, 30000, 40000, 50000]}
           unitOfMeasure="K"
@@ -133,8 +133,28 @@ export default function Home() {
               fill: false,
             },
           ]}
-        />
+        /> */}
         {/* <LineChartTeste /> */}
+        <DoughnutChart 
+        valorTotal={10000} 
+        style={{ width: "240px", height: "100%" }}
+        label="Dataset 1" 
+        drawLabels= {false}
+        data={[
+          { label: 'Teste', value: 10 },
+          { label: 'Teste2', value: 20 },
+          { label: 'Teste3', value: 30 },
+          { label: 'Teste4', value: 25 },
+          { label: 'Teste5', value: 15 }
+        ]}
+        chartColors={[
+            'rgba(255, 99, 132, 0.5)', 
+            'rgba(255, 159, 64, 0.5)', 
+            'rgba(255, 205, 86, 0.5)', 
+            'rgba(75, 192, 192, 0.5)', 
+            'rgba(54, 162, 235, 0.5)' 
+          ]}
+        /> 
         {/* <DoughnutChart 
           valorTotal={10000} 
           style={{ height: "100%", width: "240px" }}
@@ -231,7 +251,7 @@ export default function Home() {
           chartColor="#33C1FF"
           ticks={[1.1, 1.3, 1.5, 1.7, 1.9]}
         /> */}
-        <p>Vertical Multiple Bar Chart</p>
+        {/* <p>Vertical Multiple Bar Chart</p>
         <VerticalMultipleBarChart 
           dataset1={{
             data: [10, 46, 17, 21, 39, 21, 34, 26, 46, 19, 25, 47],
@@ -244,7 +264,7 @@ export default function Home() {
             backgroundColor: "#FF5733"
           }}
           style={{ height: "300px", width: "100%" }}
-        />
+        /> */}
         {/* <p>Vertical Bar Chart Teste</p>
         <VerticalBarChartTeste /> */}
       </div>
